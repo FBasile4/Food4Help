@@ -1,0 +1,5 @@
+com\example\reservationservice\ReservationServiceApplication.class
+com\example\reservationservice\controllers\ReservationController.class
+com\example\reservationservice\repositories\ReservationRepository.class
+com\example\reservationservice\models\Reservation.class
+com\example\reservationservice\configuration\RabbitMQConfiguration.class
