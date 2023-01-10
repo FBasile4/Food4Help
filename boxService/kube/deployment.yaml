@@ -1,0 +1,44 @@
+# ... Deployment YAML definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appbox
+  template:
+    metadata:
+      labels:
+        app: appbox
+    spec:
+      containers:
+      - image: appbox:latest
+        name: appbox
+        ports:
+          - containerPort: 8082
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://postgresql:5432/postgresDB?useSSL=false
+          - name: SPRING_DATASOURCE_USERNAME
+            value: postgres
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: postgres
+          - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+            value: update
+        imagePullPolicy: IfNotPresent
+---
+# ... Service YAML definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: appbox-service
+spec:
+  ports:
+  - port: 8082
+    protocol: TCP
+    targetPort: 8082
+  selector:
+    app: appbox
+  type: NodePort
