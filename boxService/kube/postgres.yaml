@@ -1,33 +1,18 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgresql
-  labels:
-    app: postgresql
-    tier: database
-spec:
-  selector:
-    app: postgresql
-    tier: database
-  ports:
-    - port: 5432
-      targetPort: 5432
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgresql
+  name: postgresql-box
   labels:
-    app: postgresql
+    app: postgresql-box
     tier: database
 spec:
   selector:
     matchLabels:
-      app: postgresql
+      app: postgresql-box
   template:
     metadata:
       labels:
-        app: postgresql
+        app: postgresql-box
         tier: database
     spec:
       containers:
@@ -42,4 +27,39 @@ spec:
               value: postgres
             - name: POSTGRES_PASSWORD
               value: postgres
-
+          volumeMounts:
+            - name: postegresql-pvc-box
+              mountPath: /var/lib/postgresql/data
+          imagePullPolicy: IfNotPresent
+      volumes:
+        - name: postegresql-pvc-box
+          persistentVolumeClaim:
+              claimName: postgresql-pvc-box
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pvc-box
+  labels:
+    app: postgresql-box
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-box
+  labels:
+    app: postgresql-box
+    tier: database
+spec:
+  selector:
+    app: postgresql-box
+    tier: database
+  ports:
+    - port: 5432
+      targetPort: 5432
