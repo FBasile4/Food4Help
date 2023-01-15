@@ -14,13 +14,13 @@ spec:
         app: appuser
     spec:
       containers:
-      - image: appuser:latest
+      - image: docker.io/basile1/appuser:latest
         name: appuser
         ports:
           - containerPort: 8080
         env:
           - name: SPRING_DATASOURCE_URL
-            value: jdbc:postgresql://postgresql:5432/postgresDB?useSSL=false
+            value: jdbc:postgresql://postgresql-user:5432/postgresDB?useSSL=false
           - name: SPRING_DATASOURCE_USERNAME
             value: postgres
           - name: SPRING_DATASOURCE_PASSWORD
@@ -36,9 +36,8 @@ metadata:
   name: appuser-service
 spec:
   ports:
-  - port: 8080
-    protocol: TCP
+  - port: 80
     targetPort: 8080
   selector:
     app: appuser
-  type: ClusterIP
+  type: LoadBalancer
