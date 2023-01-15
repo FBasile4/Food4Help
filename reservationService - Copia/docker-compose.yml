@@ -25,5 +25,4 @@ services:
 
 networks:
   msgrabbit:
-   external:
-     name: msgrabbit
+   external: true

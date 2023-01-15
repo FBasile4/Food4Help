@@ -14,13 +14,13 @@ spec:
         app: appres
     spec:
       containers:
-      - image: appres:latest
+      - image: docker.io/basile1/appres:latest
         name: appres
         ports:
           - containerPort: 8083
         env:
           - name: SPRING_DATASOURCE_URL
-            value: jdbc:postgresql://postgresql:5432/postgresDB?useSSL=false
+            value: jdbc:postgresql://postgresql-res:5432/postgresDB?useSSL=false
           - name: SPRING_DATASOURCE_USERNAME
             value: postgres
           - name: SPRING_DATASOURCE_PASSWORD
@@ -41,4 +41,4 @@ spec:
     targetPort: 8083
   selector:
     app: appres
-  type: NodePort
+  type: ClusterIP
